@@ -1,4 +1,4 @@
 package com.Gendesson.orcamentos.Clientes;
 
-public class ClientesModel {
+public class ClienteRepository {
 }
