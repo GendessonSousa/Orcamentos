@@ -1,6 +1,7 @@
 package com.Gendesson.orcamentos.Servicos;
 
 import com.Gendesson.orcamentos.Orcamentos.OrcamentoModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class ServicoModel {
     private String unidade;
     private Double precoUnit;
     @OneToMany(mappedBy = "servicoModel")
+    @JsonIgnore
     private List<OrcamentoModel> orcamentoModel;
 
     public ServicoModel() {

@@ -1,6 +1,7 @@
 package com.Gendesson.orcamentos.Clientes;
 
 import com.Gendesson.orcamentos.Orcamentos.OrcamentoModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -12,18 +13,20 @@ public class ClienteModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
-    private String endereço;
+    private String endereco;
     @OneToMany(mappedBy = "clienteModel")
+    @JsonIgnore
     private List<OrcamentoModel> orcamentoModel;
 
     public ClienteModel() {
     }
 
-    public ClienteModel(String nome, String email, String endereço) {
+    public ClienteModel(String nome, String email, String endereco) {
         this.nome = nome;
         this.email = email;
-        this.endereço = endereço;
+        this.endereco = endereco;
     }
 
     public String getNome() {
@@ -42,11 +45,11 @@ public class ClienteModel {
         this.email = email;
     }
 
-    public String getEndereço() {
-        return endereço;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }
