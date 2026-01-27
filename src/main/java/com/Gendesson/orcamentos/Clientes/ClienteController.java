@@ -5,11 +5,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping
+@RequestMapping("/clientes")
 public class ClienteController {
-    @GetMapping("/testeInicial")
-    public String testeInicial(){
-        return "Primeira rota, teste incial da aplicação!";
+    private ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
+
+    @GetMapping("/listar")
+    public List<ClienteModel> listarClientes(){
+        return clienteService.listarClientes();
     }
 }
