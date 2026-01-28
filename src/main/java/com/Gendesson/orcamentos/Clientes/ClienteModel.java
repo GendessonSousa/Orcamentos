@@ -18,7 +18,7 @@ public class ClienteModel {
     private String endereco;
     @OneToMany(mappedBy = "clienteModel")
     @JsonIgnore
-    private List<OrcamentoModel> orcamentoModel;
+    private List<OrcamentoModel> orcamento;
 
     public ClienteModel() {
     }
@@ -27,6 +27,14 @@ public class ClienteModel {
         this.nome = nome;
         this.email = email;
         this.endereco = endereco;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -51,5 +59,13 @@ public class ClienteModel {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public List<OrcamentoModel> getOrcamento() {
+        return orcamento;
+    }
+
+    public void setOrcamento(List<OrcamentoModel> orcamento) {
+        this.orcamento = orcamento;
     }
 }
