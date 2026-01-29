@@ -1,9 +1,7 @@
 package com.Gendesson.orcamentos.Clientes;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +15,12 @@ public class ClienteController {
     }
 
     @GetMapping("/listar")
-    public List<ClienteModel> listarClientes(){
+    public List<ClienteDTO> listarClientes(){
         return clienteService.listarClientes();
+    }
+
+    @PostMapping("/criar")
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO cliente){
+        return clienteService.criarCliente(cliente);
     }
 }
