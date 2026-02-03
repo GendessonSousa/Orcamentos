@@ -1,0 +1,176 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adicionar Cliente</title>
+    <style>
+        /* ====== ESTILO GERAL ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        /* ====== FORM CONTAINER ====== */
+        .form-container {
+            background: #1f2d3b;
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ====== MENSAGEM ====== */
+        .mensagem {
+            background: rgba(0, 188, 212, 0.15);
+            border-left: 5px solid #00bcd4;
+            color: #00e0ff;
+            padding: 12px;
+            margin-bottom: 15px;
+            width: 100%;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* ====== FORM ====== */
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        label {
+            margin: 10px 0 6px 3px;
+            font-weight: 600;
+            color: #00bcd4;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: #263646;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #00bcd4;
+            outline: none;
+            background: #2f4156;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* ====== BOTÃO ====== */
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #00bcd4;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        button:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+        }
+
+        /* ====== LINK ====== */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #3a7bd5;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+        }
+
+        a:hover {
+            background: #2a5fa2;
+            transform: translateY(-2px);
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.6);
+        }
+
+        /* ====== RESPONSIVIDADE ====== */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+    </head>
+
+    <body>
+
+    <h1>Adicionar Cliente</h1>
+
+    <div class="form-container">
+
+        <div th:if="${mensagem}" class="mensagem" th:text="${mensagem}"></div>
+
+        <form th:action="@{/clientes/ui/salvar}" th:object="${cliente}" method="post">
+
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" th:field="*{nome}" required />
+
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" th:field="*{telefone}" />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required />
+
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" th:field="*{endereco}" required />
+
+            <button type="submit">Cadastrar Cliente</button>
+        </form>
+
+        <a th:href="@{/clientes/ui/listar}">Voltar para a lista de clientes</a>
+
+    </div>
+
+    </body>
+</html>

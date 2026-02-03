@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alterar Cliente</title>
+
+    <style>
+        /* ====== ESTILO GERAL ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+            text-align: center;
+        }
+
+        /* ====== CONTAINER ====== */
+        .form-container {
+            background: #1f2d3b;
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ====== FORM ====== */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 6px 3px;
+            font-weight: 600;
+            color: #00bcd4;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: #263646;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #00bcd4;
+            outline: none;
+            background: #2f4156;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* ====== BOTÕES ====== */
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #00bcd4;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        button:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            background: #3a7bd5;
+            padding: 10px;
+            border-radius: 8px;
+            transition: 0.3s;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+        }
+
+        a:hover {
+            background: #2a5fa2;
+            transform: translateY(-2px);
+        }
+
+        /* ====== RESPONSIVIDADE ====== */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Alterar Cliente</h1>
+
+    <form th:action="@{/clientes/ui/alterar}"
+          th:object="${cliente}"
+          method="post">
+
+        <!-- ID oculto (OBRIGATÓRIO) -->
+        <input type="hidden" th:field="*{id}" />
+
+
+        <!-- Nome -->
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+
+        <!-- Email -->
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required>
+
+        <!-- Telefone -->
+        <label for="telefone">Telefone</label>
+        <input type="text" id="telefone" th:field="*{telefone}" required>
+
+        <!-- Endereço -->
+        <label for="endereco">Endereço</label>
+        <input type="text" id="endereco" th:field="*{endereco}" required>
+
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <a th:href="@{/clientes/ui/listar}">Cancelar e voltar</a>
+</div>
+
+</body>
+</html>
