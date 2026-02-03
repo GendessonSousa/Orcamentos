@@ -13,6 +13,7 @@ public class ClienteModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    private String telefone;
     @Column(unique = true)
     private String email;
     private String endereco;
@@ -23,8 +24,9 @@ public class ClienteModel {
     public ClienteModel() {
     }
 
-    public ClienteModel(String nome, String email, String endereco) {
+    public ClienteModel(String nome, String telefone, String email, String endereco) {
         this.nome = nome;
+        this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
     }
@@ -43,6 +45,14 @@ public class ClienteModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getEmail() {

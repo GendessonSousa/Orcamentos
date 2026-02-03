@@ -10,6 +10,7 @@ public class ClienteMapper {
         clienteModel.setNome(clienteDTO.getNome());
         clienteModel.setEmail(clienteDTO.getEmail());
         clienteModel.setEndereco(clienteDTO.getEndereco());
+        clienteModel.setTelefone(clienteDTO.getTelefone());
         return clienteModel;
     }
 
@@ -19,6 +20,7 @@ public class ClienteMapper {
         clienteDTO.setNome(clienteModel.getNome());
         clienteDTO.setEmail(clienteModel.getEmail());
         clienteDTO.setEndereco(clienteModel.getEndereco());
+        clienteDTO.setTelefone(clienteModel.getTelefone());
         return clienteDTO;
     }
 }
