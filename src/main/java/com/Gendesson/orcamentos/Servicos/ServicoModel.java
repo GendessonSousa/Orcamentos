@@ -4,6 +4,7 @@ import com.Gendesson.orcamentos.Orcamentos.OrcamentoModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -13,21 +14,29 @@ public class ServicoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private Double quantidade;
+    private BigDecimal quantidade;
     private String unidade;
-    private Double precoUnit;
+    private BigDecimal precoUnit;
     @OneToMany(mappedBy = "servicoModel")
     @JsonIgnore
-    private List<OrcamentoModel> orcamentoModel;
+    private List<OrcamentoModel> orcamentos;
 
     public ServicoModel() {
     }
 
-    public ServicoModel(String nome, Double quantidade, String unidade, Double precoUnit) {
+    public ServicoModel(String nome, BigDecimal quantidade, String unidade, BigDecimal  precoUnit) {
         this.nome = nome;
         this.quantidade = quantidade;
         this.unidade = unidade;
         this.precoUnit = precoUnit;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -38,11 +47,11 @@ public class ServicoModel {
         this.nome = nome;
     }
 
-    public Double getQuantidade() {
+    public BigDecimal getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Double quantidade) {
+    public void setQuantidade(BigDecimal quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -54,11 +63,11 @@ public class ServicoModel {
         this.unidade = unidade;
     }
 
-    public Double getPrecoUnit() {
+    public BigDecimal  getPrecoUnit() {
         return precoUnit;
     }
 
-    public void setPrecoUnit(Double precoUnit) {
+    public void setPrecoUnit(BigDecimal  precoUnit) {
         this.precoUnit = precoUnit;
     }
 }
