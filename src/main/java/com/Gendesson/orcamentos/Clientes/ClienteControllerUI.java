@@ -20,7 +20,7 @@ public class ClienteControllerUI {
     public String listarClientes (Model model){
         List<ClienteDTO> clientes = clienteService.listarClientes();
         model.addAttribute("clientes", clientes);
-        return "listarClientes";
+        return "clientes/listarClientes";
     }
 
     @GetMapping("/deletar/{id}")
@@ -34,17 +34,17 @@ public class ClienteControllerUI {
         ClienteDTO cliente = clienteService.listarClientesPorId(id);
         if (cliente != null){
             model.addAttribute("cliente", cliente);
-            return "detalhesCliente";
+            return "clientes/detalhesCliente";
         } else {
             model.addAttribute("mensagem", "Cliente não encontrado!");
-            return "listarClientes";
+            return "clientes/listarClientes";
         }
     }
 
     @GetMapping("/adicionar")
     public String formularioAdicionarCliente (Model model){
         model.addAttribute("cliente", new ClienteDTO());
-        return "adicionarCliente";
+        return "clientes/adicionarCliente";
     }
 
     @PostMapping("/salvar")
@@ -64,7 +64,7 @@ public class ClienteControllerUI {
         }
 
         model.addAttribute("cliente", cliente);
-        return "detalhesCliente";
+        return "clientes/detalhesCliente";
     }
 
 
@@ -77,7 +77,7 @@ public class ClienteControllerUI {
         }
 
         model.addAttribute("cliente", cliente);
-        return "alterarCliente";
+        return "clientes/alterarCliente";
     }
 
     @PostMapping("/alterar")
