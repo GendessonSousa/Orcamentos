@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhes do Serviço</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        .container {
+            background: #1f2d3b;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #00bcd4;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #00bcd4;
+        }
+
+        a {
+            display: inline-block;
+            background: #3a7bd5;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+        }
+
+        a:hover {
+            background: #2a5fa2;
+            transform: translateY(-2px);
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.6);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Detalhes do Serviço</h1>
+
+<div class="container">
+    <h2 th:text="${servico.nome}"></h2>
+
+    <p><strong>ID:</strong> <span th:text="${servico.id}"></span></p>
+    <p><strong>Quantidade:</strong> <span th:text="${servico.quantidade}"></span></p>
+    <p><strong>Unidade:</strong> <span th:text="${servico.unidade}"></span></p>
+    <p><strong>Preço Unitário:</strong> <span th:text="${servico.precoUnit}"></span></p>
+</div>
+
+<a th:href="@{/servicos/ui/listar}">Voltar para a lista de serviços</a>
+
+</body>
+</html>

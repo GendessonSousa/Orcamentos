@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alterar Serviço</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .form-container {
+            background: #1f2d3b;
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 6px 3px;
+            font-weight: 600;
+            color: #00bcd4;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: #263646;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: #00bcd4;
+            outline: none;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #00bcd4;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #fff;
+            background: #3a7bd5;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Alterar Serviço</h1>
+
+    <form th:action="@{/servicos/ui/alterar}"
+          th:object="${servico}"
+          method="post">
+
+        <!-- ID (obrigatório para update) -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Nome -->
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+
+        <!-- Quantidade -->
+        <label for="quantidade">Quantidade</label>
+        <input type="number"
+               id="quantidade"
+               th:field="*{quantidade}"
+               step="0.01"
+               required>
+
+        <!-- Unidade -->
+        <label for="unidade">Unidade</label>
+        <input type="text" id="unidade" th:field="*{unidade}" required>
+
+        <!-- Preço Unitário -->
+        <label for="precoUnit">Preço Unitário</label>
+        <input type="number"
+               id="precoUnit"
+               th:field="*{precoUnit}"
+               step="0.01"
+               required>
+
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <a th:href="@{/servicos/ui/listar}">Cancelar e voltar</a>
+</div>
+
+</body>
+</html>
