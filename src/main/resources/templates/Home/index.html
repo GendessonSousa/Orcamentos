@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Orçamentos</title>
+
+    <style>
+        /* ====== ESTILO GERAL ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-size: 2.4rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        p {
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            opacity: 0.85;
+        }
+
+        /* ====== CONTAINER ====== */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* ====== CARD ====== */
+        .card {
+            background: #1f2d3b;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.35);
+        }
+
+        .card h2 {
+            color: #00bcd4;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 8px;
+            background: #00bcd4;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        .card a:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+        }
+
+        /* ====== RESPONSIVIDADE ====== */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Sistema de Orçamentos</h1>
+<p>Gerencie clientes, serviços e orçamentos de forma simples</p>
+
+<div class="container">
+
+    <!-- CLIENTES -->
+    <div class="card">
+        <h2>Clientes</h2>
+        <p>Cadastre, visualize e edite seus clientes.</p>
+        <a th:href="@{/clientes/ui/listar}">Acessar</a>
+    </div>
+
+    <!-- ORÇAMENTOS -->
+    <div class="card">
+        <h2>Orçamentos</h2>
+        <p>Crie e acompanhe orçamentos dos seus clientes.</p>
+        <a th:href="@{/orcamentos/ui/listar}">Em breve</a>
+    </div>
+
+    <!-- SERVIÇOS -->
+    <div class="card">
+        <h2>Serviços</h2>
+        <p>Gerencie os serviços oferecidos e seus valores.</p>
+        <a th:href="@{/servicos/ui/listar}">Acessar</a>
+    </div>
+
+</div>
+
+</body>
+</html>
