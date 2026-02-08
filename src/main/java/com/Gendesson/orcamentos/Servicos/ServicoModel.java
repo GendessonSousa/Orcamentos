@@ -14,7 +14,6 @@ public class ServicoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private BigDecimal quantidade;
     private String unidade;
     private BigDecimal precoUnit;
     @OneToMany(mappedBy = "servicoModel")
@@ -24,9 +23,8 @@ public class ServicoModel {
     public ServicoModel() {
     }
 
-    public ServicoModel(String nome, BigDecimal quantidade, String unidade, BigDecimal  precoUnit) {
+    public ServicoModel(String nome, String unidade, BigDecimal  precoUnit) {
         this.nome = nome;
-        this.quantidade = quantidade;
         this.unidade = unidade;
         this.precoUnit = precoUnit;
     }
@@ -47,13 +45,6 @@ public class ServicoModel {
         this.nome = nome;
     }
 
-    public BigDecimal getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(BigDecimal quantidade) {
-        this.quantidade = quantidade;
-    }
 
     public String getUnidade() {
         return unidade;

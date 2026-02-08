@@ -9,7 +9,6 @@ public class ServicoMapper {
         servicoModel.setId(servicoDTO.getId());
         servicoModel.setNome(servicoDTO.getNome());
         servicoModel.setPrecoUnit(servicoDTO.getPrecoUnit());
-        servicoModel.setQuantidade(servicoDTO.getQuantidade());
         servicoModel.setUnidade(servicoDTO.getUnidade());
         return servicoModel;
     }
@@ -19,7 +18,6 @@ public class ServicoMapper {
         servicoDTO.setId(servicoModel.getId());
         servicoDTO.setNome(servicoModel.getNome());
         servicoDTO.setPrecoUnit(servicoModel.getPrecoUnit());
-        servicoDTO.setQuantidade(servicoModel.getQuantidade());
         servicoDTO.setUnidade(servicoModel.getUnidade());
         return servicoDTO;
     }
