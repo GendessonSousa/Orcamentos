@@ -15,10 +15,12 @@ public class ItemOrcamentoModel {
 
     @ManyToOne
     @JoinColumn(name = "orcamento_id")
+    @JsonIgnore
     private OrcamentoModel orcamento;
 
     @ManyToOne
     @JoinColumn(name = "servico_id")
+    @JsonIgnore
     private ServicoModel servico;
 
     private BigDecimal quantidade;
