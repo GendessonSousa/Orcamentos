@@ -2,6 +2,7 @@ package com.Gendesson.orcamentos.ItemOrcamento;
 
 import com.Gendesson.orcamentos.Orcamentos.OrcamentoModel;
 import com.Gendesson.orcamentos.Servicos.ServicoModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
