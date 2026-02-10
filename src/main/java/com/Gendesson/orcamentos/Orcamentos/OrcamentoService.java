@@ -1,0 +1,88 @@
+package com.Gendesson.orcamentos.Orcamentos;
+
+import com.Gendesson.orcamentos.Clientes.ClienteModel;
+import com.Gendesson.orcamentos.Clientes.ClienteRepository;
+import com.Gendesson.orcamentos.ItemOrcamento.ItemOrcamentoModel;
+import com.Gendesson.orcamentos.Servicos.ServicoModel;
+import com.Gendesson.orcamentos.Servicos.ServicoRepository;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class OrcamentoService {
+    private final OrcamentoRepository orcamentoRepository;
+    private final OrcamentoMapper orcamentoMapper;
+    private final ClienteRepository clienteRepository;
+    private final ServicoRepository servicoRepository;
+
+    public OrcamentoService(OrcamentoRepository orcamentoRepository, OrcamentoMapper orcamentoMapper, ClienteRepository clienteRepository, ServicoRepository servicoRepository) {
+        this.orcamentoRepository = orcamentoRepository;
+        this.orcamentoMapper = orcamentoMapper;
+        this.clienteRepository = clienteRepository;
+        this.servicoRepository = servicoRepository;
+    }
+
+    //Create
+    public OrcamentoDTO criarOrcamento (OrcamentoDTO orcamentoDTO){
+        //Buscar cliente
+        ClienteModel cliente = clienteRepository.findById(orcamentoDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + orcamentoDTO.getId()));
+
+        //Buscar serviços
+        List<Long> servicoItens = orcamentoDTO.getItens()
+                .stream()
+                .map(item -> item.getServicoId())
+                .toList();
+
+        List<ServicoModel> servicos = servicoRepository.findAllById(servicoItens);
+
+        //Mapear DTO -> Model
+        OrcamentoModel orcamento = orcamentoMapper.map(orcamentoDTO, cliente, servicos);
+
+        //Calcular subtotal e total
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        for (ItemOrcamentoModel item : orcamento.getItens()){
+            BigDecimal subtotal = item.getPrecoUnit()
+                    .multiply(item.getQuantidade());
+
+            item.setSubtotal(subtotal);
+            valorTotal = valorTotal.add(subtotal);
+        }
+        orcamento.setValorTotal(valorTotal);
+
+        //Salvar
+        OrcamentoModel salvo = orcamentoRepository.save(orcamento);
+
+        //Retornar DTO
+        return orcamentoMapper.map(salvo);
+    }
+
+    //READ
+    public List<OrcamentoDTO> listarOrcamentos (){
+        return orcamentoRepository.findAll()
+                .stream()
+                .map(orcamentoMapper::map)
+                .toList();
+    }
+
+    //READ BY ID
+    public OrcamentoDTO listarOrcamentoPorID(Long id){
+        Optional<OrcamentoModel> orcamentoPorId = orcamentoRepository.findById(id);
+        return orcamentoPorId.map(orcamentoMapper::map).orElse(null);
+    }
+
+    //DELETE
+    public boolean deletarOrcamento(Long id){
+        if (!orcamentoRepository.existsById(id)){
+            return false;
+        }
+        clienteRepository.deleteById(id);
+        return true;
+    }
+
+    //UPDATE (Posteriormente)
+}
