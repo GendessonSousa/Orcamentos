@@ -25,11 +25,11 @@ public class OrcamentoService {
         this.servicoRepository = servicoRepository;
     }
 
-    //Create
+    //CREATE
     public OrcamentoDTO criarOrcamento (OrcamentoDTO orcamentoDTO){
         //Buscar cliente
-        ClienteModel cliente = clienteRepository.findById(orcamentoDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + orcamentoDTO.getId()));
+        ClienteModel cliente = clienteRepository.findById(orcamentoDTO.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + orcamentoDTO.getClienteId()));
 
         //Buscar serviços
         List<Long> servicoItens = orcamentoDTO.getItens()
@@ -76,12 +76,11 @@ public class OrcamentoService {
     }
 
     //DELETE
-    public boolean deletarOrcamento(Long id){
-        if (!orcamentoRepository.existsById(id)){
-            return false;
-        }
-        clienteRepository.deleteById(id);
-        return true;
+    public void deletarOrcamento(Long id) {
+        OrcamentoModel orcamento = orcamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orçamento não encontrado"));
+
+        orcamentoRepository.delete(orcamento);
     }
 
     //UPDATE (Posteriormente)
