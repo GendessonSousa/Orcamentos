@@ -17,9 +17,9 @@ public class ClienteModel {
     @Column(unique = true)
     private String email;
     private String endereco;
-    @OneToMany(mappedBy = "clienteModel")
+    @OneToMany(mappedBy = "cliente")
     @JsonIgnore
-    private List<OrcamentoModel> orcamento;
+    private List<OrcamentoModel> orcamentos;
 
     public ClienteModel() {
     }
@@ -71,11 +71,11 @@ public class ClienteModel {
         this.endereco = endereco;
     }
 
-    public List<OrcamentoModel> getOrcamento() {
-        return orcamento;
+    public List<OrcamentoModel> getOrcamentos() {
+        return orcamentos;
     }
 
-    public void setOrcamento(List<OrcamentoModel> orcamento) {
-        this.orcamento = orcamento;
+    public void setOrcamentos(List<OrcamentoModel> orcamentos) {
+        this.orcamentos = orcamentos;
     }
 }
