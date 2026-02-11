@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Orçamentos</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+            color: #00bcd4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        table {
+            width: 100%;
+            max-width: 1200px;
+            border-collapse: collapse;
+            background: #1f2d3b;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            table-layout: fixed;
+        }
+
+        thead {
+            background: #00bcd4;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 188, 212, 0.15);
+        }
+
+        td a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 3px;
+            padding: 0;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #fff;
+            transition: 0.3s;
+            width: 60px;
+            height: 36px;
+        }
+
+        .btn-detalhes { background: #3a7bd5; }
+        .btn-editar   { background: #5e2129; }
+        .btn-deletar  { background: #e53935; }
+        .btn-extrair  { background: #993399; }
+
+        .btn-detalhes:hover { background: #2a5fa2; }
+        .btn-editar:hover   { background: #461f24; }
+        .btn-deletar:hover  { background: #b71c1c; }
+        .btn-extrair:hover { background: #723172;}
+
+        .btn-adicionar {
+            display: inline-block;
+            background-color: #ffca28;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-adicionar:hover {
+            background-color: #ffc107;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 20px;
+                background: #263646;
+                border-radius: 12px;
+                padding: 15px;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 5px;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #00bcd4;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Lista de Orçamentos</h1>
+
+<a class="btn-adicionar" th:href="@{/orcamentos/criar}">
+    Criar Novo Orçamento
+</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Valor Total</th>
+        <th>Data Criação</th>
+        <th>Data Validade</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="orcamento : ${orcamentos}">
+        <td th:text="${orcamento.id}" data-label="ID"></td>
+        <td th:text="${orcamento.clienteNome}" data-label="Cliente"></td>
+        <td th:text="${orcamento.valorTotal}" data-label="Valor Total"></td>
+        <td th:text="${orcamento.dataCriacao}" data-label="Data Criação"></td>
+        <td th:text="${orcamento.dataValidade}" data-label="Data Validade"></td>
+
+        <td data-label="Ações">
+            <a class="btn-detalhes"
+               th:href="@{/orcamentos/detalhes/{id}(id=${orcamento.id})}">
+                Ver
+            </a>
+
+            <a class="btn-editar"
+               th:href="@{/orcamentos/alterar/{id}(id=${orcamento.id})}">
+                Alterar
+            </a>
+
+            <a class="btn-deletar"
+               th:href="@{/orcamentos/deletar/{id}(id=${orcamento.id})}">
+                Deletar
+            </a>
+
+            <a class="btn-extrair"
+               th:href="@{/orcamentos/extrair/{id}(id=${orcamento.id})}"> <!-- Botão que irá extrair o orçamento posteriormente (Stand by no momento)-->
+                Extrair
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
