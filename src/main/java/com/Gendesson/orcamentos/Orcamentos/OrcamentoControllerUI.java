@@ -1,6 +1,9 @@
 package com.Gendesson.orcamentos.Orcamentos;
 
 import com.Gendesson.orcamentos.Clientes.ClienteDTO;
+import com.Gendesson.orcamentos.Clientes.ClienteService;
+import com.Gendesson.orcamentos.Servicos.ServicoDTO;
+import com.Gendesson.orcamentos.Servicos.ServicoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +15,13 @@ import java.util.List;
 @RequestMapping("/orcamentos/ui")
 public class OrcamentoControllerUI {
     private final OrcamentoService orcamentoService;
+    private final ClienteService clienteService;
+    private final ServicoService servicoService;
 
-    public OrcamentoControllerUI(OrcamentoService orcamentoService) {
+    public OrcamentoControllerUI(OrcamentoService orcamentoService, ClienteService clienteService, ServicoService servicoService) {
         this.orcamentoService = orcamentoService;
+        this.clienteService = clienteService;
+        this.servicoService = servicoService;
     }
 
     @GetMapping("/listar")
@@ -38,14 +45,20 @@ public class OrcamentoControllerUI {
             return "orcamento/detalhesOrcamento";
         } else {
             model.addAttribute("mensagem", "Orçamento não encontrado!");
-            return "orcamento/listarOrcamento";
+            return "orcamentos/listarOrcamento";
         }
     }
 
     @GetMapping("/adicionar")
     public String formularioAdicionarOrcamento (Model model){
+        List<ClienteDTO> clientes = clienteService.listarClientes();
+        List<ServicoDTO> servicos = servicoService.listarServicos();
+
+
+        model.addAttribute("clientes", clientes);
+        model.addAttribute("servicos", servicos);
         model.addAttribute("orcamento", new OrcamentoDTO());
-        return "orcamento/adicionarOrcamento";
+        return "orcamentos/adicionarOrcamento";
     }
 
     @PostMapping("/salvar")

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Orçamento</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #00bcd4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 1000px;
+            background: #1f2d3b;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.rem;
+            color: #00bcd4;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .card h3::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #00bcd4;
+            margin: 8px auto 0 auto;
+            border-radius: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            min-width: 120px;
+        }
+
+        select, input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-add {
+            background: #00bcd4;
+            color: #fff;
+        }
+
+        .btn-add:hover {
+            background: #0097a7;
+        }
+
+        .btn-new {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-save {
+            background: #4caf50;
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        thead {
+            background: #00bcd4;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .total-box {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            text-align: right;
+            color: #ffca28;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Novo Orçamento</h1>
+
+<form th:action="@{/orcamentos/ui/salvar}" method="post">
+
+    <!-- CLIENTE -->
+    <div class="card">
+        <h3>Cliente</h3>
+
+        <div class="form-group">
+            <label>Selecionar:</label>
+            <select name="clienteId" required>
+                <option value="">Selecione</option>
+                <option th:each="cliente : ${clientes}"
+                        th:value="${cliente.id}"
+                        th:text="${cliente.nome}">
+                </option>
+            </select>
+
+            <a th:href="@{/clientes/ui/adicionar(returnUrl='/orcamentos/ui/adicionar')}">
+                <button type="button" class="btn-new">Novo Cliente</button>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- SERVIÇOS -->
+    <div class="card">
+        <h3>Serviços</h3>
+
+        <div class="form-group">
+            <select id="servicoSelect">
+                <option value="">Selecione Serviço</option>
+                <option th:each="servico : ${servicos}"
+                        th:value="${servico.id}"
+                        th:text="${servico.nome}">
+                </option>
+            </select>
+
+            <input type="number" id="quantidade" placeholder="Qtd" min="1">
+
+            <input type="number" id="precoUnit" placeholder="Preço Unit" step="0.01">
+
+            <button type="button" class="btn-add" onclick="adicionarItem()">Adicionar</button>
+        </div>
+
+        <a th:href="@{/servicos/ui/adicionar(returnUrl='/orcamentos/ui/adicionar')}">
+            <button type="button" class="btn-new">Novo Serviço</button>
+        </a>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Serviço</th>
+                <th>Qtd</th>
+                <th>Preço Unit</th>
+                <th>Subtotal</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody id="tabelaItens">
+            </tbody>
+        </table>
+
+        <div class="total-box">
+            Total: R$ <span id="total">0.00</span>
+        </div>
+    </div>
+
+
+    <!-- DATAS -->
+    <div class="card">
+        <h3>Datas</h3>
+
+        <div class="form-group">
+            <label>Data Criação:</label>
+            <input type="date" name="dataCriacao" required>
+        </div>
+
+        <div class="form-group">
+            <label>Data Validade:</label>
+            <input type="date" name="dataValidade" required>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-save">Salvar Orçamento</button>
+
+</form>
+
+<script>
+    let total = 0;
+    let index = 0;
+
+    function adicionarItem() {
+
+        const select = document.getElementById("servicoSelect");
+        const servicoId = select.value;
+        const servicoNome = select.options[select.selectedIndex]?.text;
+
+        const quantidadeInput = document.getElementById("quantidade");
+        const precoUnitInput = document.getElementById("precoUnit");
+
+        const quantidade = parseFloat(quantidadeInput.value);
+        const precoUnit = parseFloat(precoUnitInput.value);
+
+        if (!servicoId || !quantidade || quantidade <= 0 || !precoUnit || precoUnit <= 0) {
+            alert("Preencha todos os campos corretamente.");
+            return;
+        }
+
+        const currentIndex = index;
+
+        const subtotal = quantidade * precoUnit;
+        total += subtotal;
+
+        document.getElementById("total").innerText = total.toFixed(2);
+
+        const tabela = document.getElementById("tabelaItens");
+
+        // Criar linha visual
+        const linha = document.createElement("tr");
+        linha.id = `linha-${currentIndex}`;
+
+        linha.innerHTML = `
+            <td>${servicoNome}</td>
+            <td>${quantidade}</td>
+            <td>${precoUnit.toFixed(2)}</td>
+            <td>${subtotal.toFixed(2)}</td>
+            <td>
+                <button type="button" onclick="removerItem(${currentIndex}, ${subtotal})">
+                    Remover
+                </button>
+            </td>
+        `;
+
+        tabela.appendChild(linha);
+
+        // Criar inputs hidden
+        const form = document.querySelector("form");
+
+        const hiddenContainer = document.createElement("div");
+        hiddenContainer.id = `hidden-${currentIndex}`;
+        hiddenContainer.style.display = "none";
+
+        hiddenContainer.innerHTML = `
+            <input type="hidden" name="itens[${currentIndex}].servicoId" value="${servicoId}">
+            <input type="hidden" name="itens[${currentIndex}].quantidade" value="${quantidade}">
+            <input type="hidden" name="itens[${currentIndex}].precoUnit" value="${precoUnit}">
+        `;
+
+        form.appendChild(hiddenContainer);
+
+        // Limpar campos
+        select.value = "";
+        quantidadeInput.value = "";
+        precoUnitInput.value = "";
+
+        index++;
+    }
+
+    function removerItem(i, subtotal) {
+
+        const linha = document.getElementById(`linha-${i}`);
+        const hidden = document.getElementById(`hidden-${i}`);
+
+        if (linha) linha.remove();
+        if (hidden) hidden.remove();
+
+        total -= subtotal;
+
+        if (total < 0) total = 0;
+
+        document.getElementById("total").innerText = total.toFixed(2);
+    }
+</script>
+
+</body>
+</html>
