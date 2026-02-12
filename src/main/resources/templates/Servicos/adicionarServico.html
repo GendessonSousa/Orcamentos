@@ -155,13 +155,11 @@
 
     <form th:action="@{/servicos/ui/salvar}" th:object="${servico}" method="post">
 
+        <input type="hidden" name="returnUrl" th:value="${returnUrl}" />
+
         <!-- Nome -->
         <label for="nome">Nome do serviço:</label>
         <input type="text" id="nome" th:field="*{nome}" required />
-
-        <!-- Quantidade -->
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" step="0.01" id="quantidade" th:field="*{quantidade}" required />
 
         <!-- Unidade -->
         <label for="unidade">Unidade (ex: m², horas, peças):</label>

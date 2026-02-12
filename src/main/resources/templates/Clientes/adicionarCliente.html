@@ -153,6 +153,8 @@
 
         <form th:action="@{/clientes/ui/salvar}" th:object="${cliente}" method="post">
 
+            <input type="hidden" name="returnUrl" th:value="${returnUrl}" />
+
             <label for="nome">Nome:</label>
             <input type="text" id="nome" th:field="*{nome}" required />
 

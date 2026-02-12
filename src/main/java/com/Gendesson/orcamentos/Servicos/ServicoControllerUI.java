@@ -30,15 +30,21 @@ public class ServicoControllerUI {
     }
 
     @GetMapping("/adicionar")
-    public String formularioAdicionarServico (Model model){
+    public String formularioAdicionarServico (@RequestParam(required = false) String returnUrl, Model model){
         model.addAttribute("servico", new ServicoDTO());
+        model.addAttribute("returnUrl", returnUrl);
         return "servicos/adicionarServico";
     }
 
     @PostMapping("/salvar")
-    public String salvarServico (@ModelAttribute ServicoDTO servico, RedirectAttributes redirectAttributes){
+    public String salvarServico (@ModelAttribute ServicoDTO servico, @RequestParam(required = false) String returnUrl, RedirectAttributes redirectAttributes){
         servicoService.criarServico(servico);
+
         redirectAttributes.addFlashAttribute("mensagem", "Serviço cadastrado com sucesso!");
+
+        if (returnUrl != null && !returnUrl.isEmpty()){
+            return "redirect:" + returnUrl;
+        }
         return "redirect:/servicos/ui/listar";
     }
 

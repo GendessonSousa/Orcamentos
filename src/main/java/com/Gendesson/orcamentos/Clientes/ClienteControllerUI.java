@@ -42,15 +42,23 @@ public class ClienteControllerUI {
     }
 
     @GetMapping("/adicionar")
-    public String formularioAdicionarCliente (Model model){
+    public String formularioAdicionarCliente (@RequestParam(required = false) String returnUrl, Model model){
         model.addAttribute("cliente", new ClienteDTO());
+        model.addAttribute("returnUrl", returnUrl);
+
         return "clientes/adicionarCliente";
     }
 
     @PostMapping("/salvar")
-    public String salvarCliente (@ModelAttribute ClienteDTO cliente, RedirectAttributes redirectAttributes){
+    public String salvarCliente(@ModelAttribute ClienteDTO cliente, @RequestParam(required = false) String returnUrl, RedirectAttributes redirectAttributes) {
         clienteService.criarCliente(cliente);
+
         redirectAttributes.addFlashAttribute("mensagem", "Cliente cadastrado com sucesso!");
+
+        if (returnUrl != null && !returnUrl.isBlank()) {
+            return "redirect:" + returnUrl;
+        }
+
         return "redirect:/clientes/ui/listar";
     }
 
