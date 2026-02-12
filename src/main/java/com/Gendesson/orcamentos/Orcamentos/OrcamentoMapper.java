@@ -16,7 +16,10 @@ public class OrcamentoMapper {
         this.itemMapper = itemMapper;
     }
 
-    public OrcamentoModel map(OrcamentoDTO orcamentoDTO, ClienteModel clienteModel, List<ServicoModel> servicos){
+    public OrcamentoModel map(OrcamentoDTO orcamentoDTO,
+                              ClienteModel clienteModel,
+                              List<ServicoModel> servicos) {
+
         OrcamentoModel orcamentoModel = new OrcamentoModel();
         orcamentoModel.setId(orcamentoDTO.getId());
         orcamentoModel.setValorTotal(orcamentoDTO.getValorTotal());
@@ -24,24 +27,35 @@ public class OrcamentoMapper {
         orcamentoModel.setDataValidade(orcamentoDTO.getDataValidade());
         orcamentoModel.setCliente(clienteModel);
 
-        // Itens
-        if (orcamentoDTO.getItens() != null){
+        if (orcamentoDTO.getItens() != null) {
             List<ItemOrcamentoModel> itensModel = orcamentoDTO.getItens()
                     .stream()
+                    //Remove itens nulos (caso Spring crie posições vazias)
+                    .filter(itemDTO -> itemDTO != null)
+                    //Remove itens com servicoId null
+                    .filter(itemDTO -> itemDTO.getServicoId() != null)
                     .map(itemDTO -> {
-                        ServicoModel servico = servicos.stream()
-                                .filter(s -> s.getId().equals(itemDTO.getServicoId()))
-                                .findFirst()
-                                .orElseThrow(() ->
-                                        new RuntimeException("Serviço não encontrado: " + itemDTO.getServicoId())
-                                );
-                        ItemOrcamentoModel item = itemMapper.map(itemDTO, servico);
 
-                        item.setOrcamento(orcamentoModel);
-                        return item;
+                        //Busca serviço com segurança
+                    ServicoModel servico = servicos.stream()
+                            .filter(s -> s.getId().equals(itemDTO.getServicoId()))
+                            .findFirst()
+                            .orElseThrow(() ->
+                                    new RuntimeException("Serviço não encontrado: " + itemDTO.getServicoId())
+                            );
+
+                    //Mapeia item
+                    ItemOrcamentoModel item = itemMapper.map(itemDTO, servico);
+
+                    //Define relação bidirecional corretamente
+                    item.setOrcamento(orcamentoModel);
+
+                    return item;
                     }).toList();
+
             orcamentoModel.setItens(itensModel);
         }
+
         return orcamentoModel;
     }
 
