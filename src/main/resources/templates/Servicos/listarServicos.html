@@ -145,7 +145,6 @@
     <tr>
         <th>ID</th>
         <th>Nome</th>
-        <th>Quantidade</th>
         <th>Unidade</th>
         <th>Preço Unitário</th>
         <th>Ações</th>
@@ -156,7 +155,6 @@
     <tr th:each="servico : ${servicos}">
         <td th:text="${servico.id}" data-label="ID"></td>
         <td th:text="${servico.nome}" data-label="Nome"></td>
-        <td th:text="${servico.quantidade}" data-label="Quantidade"></td>
         <td th:text="${servico.unidade}" data-label="Unidade"></td>
         <td th:text="${servico.precoUnit}" data-label="Preço Unitário"></td>
 
