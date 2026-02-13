@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhes do Orçamento</title>
+
+    <style>
+        /* ====== ESTILO GERAL ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #101820, #1e2a38);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #00bcd4;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+        }
+
+        h2 {
+            color: #00bcd4;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* ====== CONTAINER ====== */
+        .container {
+            background: #1f2d3b;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #00bcd4;
+        }
+
+        /* ====== TABELA ====== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #243444;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #00bcd4;
+            color: #101820;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #2e3d4f;
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #2c3f52;
+        }
+
+        /* ====== TOTAL ====== */
+        .total-box {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .total-box h3 {
+            font-size: 1.3rem;
+            color: #00e5ff;
+        }
+
+        /* ====== BOTÕES ====== */
+        .acoes {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #3a7bd5;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+        }
+
+        .btn:hover {
+            background: #2a5fa2;
+            transform: translateY(-2px);
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.6);
+        }
+
+        .btn-edit {
+            background: #ff9800;
+        }
+
+        .btn-edit:hover {
+            background: #e68900;
+        }
+
+        .btn-export {
+            background: #4caf50;
+        }
+
+        .btn-export:hover {
+            background: #3d9140;
+        }
+
+        /* ====== RESPONSIVIDADE ====== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            .acoes {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Detalhes do Orçamento</h1>
+
+    <!-- Informações principais -->
+    <div class="card">
+        <p><strong>ID:</strong> <span th:text="${orcamento.id}"></span></p>
+        <p><strong>Cliente:</strong> <span th:text="${orcamento.clienteNome}"></span></p>
+        <p><strong>Data de Criação:</strong>
+            <span th:text="${#temporals.format(orcamento.dataCriacao, 'dd/MM/yyyy')}"></span>
+        </p>
+        <p><strong>Data de Validade:</strong>
+            <span th:text="${#temporals.format(orcamento.dataValidade, 'dd/MM/yyyy')}"></span>
+        </p>
+    </div>
+
+    <!-- Itens do orçamento -->
+    <h2>Itens</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Serviço</th>
+            <th>Quantidade</th>
+            <th>Valor Unitário</th>
+            <th>Total Item</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${orcamento.itens}">
+            <td th:text="${item.servicoNome}"></td>
+            <td th:text="${item.quantidade}"></td>
+            <td th:text="${item.precoUnit}"></td>
+            <td th:text="${item.subtotal}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Total geral -->
+    <div class="total-box">
+        <h3>
+            Total Geral:
+            <span th:text="${orcamento.valorTotal}"></span>
+        </h3>
+    </div>
+
+    <!-- Ações -->
+    <div class="acoes">
+        <a class="btn" th:href="@{/orcamentos/ui/listar}">
+            Voltar
+        </a>
+
+        <a class="btn btn-edit"
+           th:href="@{/orcamentos/ui/editar/{id}(id=${orcamento.id})}">
+            Editar
+        </a>
+
+        <a class="btn btn-export"
+           th:href="@{/orcamentos/ui/exportar/{id}(id=${orcamento.id})}">
+            Extrair
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
