@@ -5,6 +5,7 @@ import com.Gendesson.orcamentos.Clientes.ClienteRepository;
 import com.Gendesson.orcamentos.ItemOrcamento.ItemOrcamentoModel;
 import com.Gendesson.orcamentos.Servicos.ServicoModel;
 import com.Gendesson.orcamentos.Servicos.ServicoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -83,5 +84,48 @@ public class OrcamentoService {
         orcamentoRepository.delete(orcamento);
     }
 
-    //UPDATE (Posteriormente)
+    //UPDATE
+    @Transactional
+    public OrcamentoDTO atualizarOrcamento(Long id, OrcamentoDTO orcamentoDTO){
+        OrcamentoModel existente = orcamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orçamento não encontrado"));
+
+        ClienteModel cliente = clienteRepository.findById(orcamentoDTO.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        existente.setCliente(cliente);
+        existente.setDataValidade(orcamentoDTO.getDataValidade());
+
+        //Limpa itens antigos
+        existente.getItens().clear();
+
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        for (var itemDTO : orcamentoDTO.getItens()) {
+            System.out.println("ServicoId: " + itemDTO.getServicoId());
+            ServicoModel servico = servicoRepository.findById(itemDTO.getServicoId())
+                    .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+
+            ItemOrcamentoModel item = new ItemOrcamentoModel();
+            item.setOrcamento(existente);
+            item.setServico(servico);
+            item.setQuantidade(itemDTO.getQuantidade());
+            item.setPrecoUnit(itemDTO.getPrecoUnit());
+
+            BigDecimal subtotal = item.getPrecoUnit()
+                    .multiply(item.getQuantidade());
+
+            item.setSubtotal(subtotal);
+
+            valorTotal = valorTotal.add(subtotal);
+
+            existente.getItens().add(item);
+        }
+
+        existente.setValorTotal(valorTotal);
+
+        OrcamentoModel salvo = orcamentoRepository.save(existente);
+
+        return orcamentoMapper.map(salvo);
+    }
 }

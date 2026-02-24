@@ -2,6 +2,7 @@ package com.Gendesson.orcamentos.Orcamentos;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,9 @@ public class OrcamentoController {
 
         return ResponseEntity.ok(orcamento);
     }
+
+
+
 
     //DELETE
     @DeleteMapping("/deletar/{id}")

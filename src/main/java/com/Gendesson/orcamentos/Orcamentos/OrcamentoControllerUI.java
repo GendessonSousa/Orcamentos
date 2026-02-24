@@ -82,13 +82,19 @@ public class OrcamentoControllerUI {
 
     @GetMapping("/alterar/{id}")
     public String alterarOrcamento(@PathVariable Long id, Model model) {
-        OrcamentoDTO orcamento = orcamentoService.listarOrcamentoPorID(id);
+        OrcamentoDTO orcamentoDto = orcamentoService.listarOrcamentoPorID(id);
 
-        if (orcamento == null) {
-            return "redirect:/orcamento/ui/listar";
-        }
 
-        model.addAttribute("orcamento", orcamento);
+        model.addAttribute("orcamento", orcamentoDto);
+        model.addAttribute("servicos", servicoService.listarServicos());
+        model.addAttribute("clientes", clienteService.listarClientes());
         return "orcamentos/alterarOrcamento";
+    }
+
+    @PostMapping("/alterar/{id}")
+    public String salvarAlteracaoOrcamento(@PathVariable Long id, @ModelAttribute OrcamentoDTO orcamento, RedirectAttributes redirectAttributes){
+        orcamentoService.atualizarOrcamento(id, orcamento);
+        redirectAttributes.addFlashAttribute("mensagem", "Orçamento atualizado com sucesso!");
+        return "redirect:/orcamentos/ui/listar";
     }
 }
