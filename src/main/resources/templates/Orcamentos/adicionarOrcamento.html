@@ -107,6 +107,7 @@
             width: 100%;
             padding: 12px;
             margin-top: 20px;
+            font-size: 1rem;
         }
 
         table {
@@ -134,6 +135,22 @@
             text-align: right;
             color: #ffca28;
         }
+
+        .btn-cancel{
+            display:block;
+            text-align:center;
+            background:#b81414;
+            color:#fff;
+            width:100%;
+            padding:12px;
+            margin-top:8px;
+            text-decoration:none;
+            border-radius:6px;
+            font-weight:bold;
+            transition:0.3s;
+            font-size: 1rem;
+        }
+
     </style>
 </head>
 
@@ -223,9 +240,12 @@
         </div>
     </div>
 
-    <button type="submit" class="btn-save">Salvar Orçamento</button>
+    <button type="submit" class="btn-save">Salvar</button>
+    <a th:href="@{/orcamentos/ui/listar}" class="btn-cancel">Cancelar</a>
 
 </form>
+
+
 
 <script>
     let total = 0;
