@@ -136,6 +136,26 @@
                 color: #00bcd4;
             }
         }
+        .acoes-footer{
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .btn-voltar{
+            display: inline-block;
+            padding: 12px 20px;
+            background: #3a7bd5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        .btn-voltar:hover{
+            background: #2a5fa2;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -184,13 +204,17 @@
             </a>
 
             <a class="btn-extrair"
-               th:href="@{/orcamentos/extrair/{id}(id=${orcamento.id})}"> <!-- Botão que irá extrair o orçamento posteriormente (Stand by no momento)-->
+               th:href="@{/orcamentos/{id}/excel(id=${orcamento.id})}"> <!-- Botão que irá extrair o orçamento posteriormente (Stand by no momento)-->
                 Extrair
             </a>
         </td>
     </tr>
     </tbody>
 </table>
-
+<div class="acoes-footer">
+    <a th:href="@{/}" class="btn-voltar">
+        ← Voltar ao Menu
+    </a>
+</div>
 </body>
 </html>
