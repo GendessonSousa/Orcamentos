@@ -43,8 +43,10 @@ public class OrcamentoController {
         return ResponseEntity.ok(orcamento);
     }
 
-
-
+    @GetMapping("/{id}/excel")
+    public ResponseEntity<byte[]> exportarExcel(@PathVariable Long id) {
+        return orcamentoService.exportarExcel(id);
+    }
 
     //DELETE
     @DeleteMapping("/deletar/{id}")

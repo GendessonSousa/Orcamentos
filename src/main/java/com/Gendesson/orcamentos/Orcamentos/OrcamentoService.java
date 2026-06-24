@@ -3,10 +3,14 @@ package com.Gendesson.orcamentos.Orcamentos;
 import com.Gendesson.orcamentos.Clientes.ClienteModel;
 import com.Gendesson.orcamentos.Clientes.ClienteRepository;
 import com.Gendesson.orcamentos.ItemOrcamento.ItemOrcamentoModel;
+import com.Gendesson.orcamentos.Orcamentos.Excel.OrcamentoExcelService;
 import com.Gendesson.orcamentos.Servicos.ServicoModel;
 import com.Gendesson.orcamentos.Servicos.ServicoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,12 +22,14 @@ public class OrcamentoService {
     private final OrcamentoMapper orcamentoMapper;
     private final ClienteRepository clienteRepository;
     private final ServicoRepository servicoRepository;
+    private final OrcamentoExcelService orcamentoExcelService;
 
-    public OrcamentoService(OrcamentoRepository orcamentoRepository, OrcamentoMapper orcamentoMapper, ClienteRepository clienteRepository, ServicoRepository servicoRepository) {
+    public OrcamentoService(OrcamentoRepository orcamentoRepository, OrcamentoMapper orcamentoMapper, ClienteRepository clienteRepository, ServicoRepository servicoRepository, OrcamentoExcelService orcamentoExcelService) {
         this.orcamentoRepository = orcamentoRepository;
         this.orcamentoMapper = orcamentoMapper;
         this.clienteRepository = clienteRepository;
         this.servicoRepository = servicoRepository;
+        this.orcamentoExcelService = orcamentoExcelService;
     }
 
     //CREATE
@@ -127,5 +133,18 @@ public class OrcamentoService {
         OrcamentoModel salvo = orcamentoRepository.save(existente);
 
         return orcamentoMapper.map(salvo);
+    }
+
+    public ResponseEntity<byte[]> exportarExcel(Long id) {
+
+        OrcamentoModel orcamento = orcamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orçamento não encontrado"));
+
+        byte[] arquivo = orcamentoExcelService.gerar(orcamento);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=orcamento.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(arquivo);
     }
 }
